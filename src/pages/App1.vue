@@ -128,7 +128,7 @@ export default {
     runSeverUpload(){
       return new Promise(
         () => {
-          this.$axios.post( "https://4kpw53thkri4yk3p4lcdclcnxq0achir.lambda-url.us-east-1.on.aws/gripenew/optimize", this.xslxJson, {
+          this.$axios.post( "https://cors-anywhere.herokuapp.com/" + "https://4kpw53thkri4yk3p4lcdclcnxq0achir.lambda-url.us-east-1.on.aws/gripenew/optimize", this.xslxJson, {
             headers: {
               "access-control-allow-origin": "*",
               "content-type": "application/json; charset=utf-8",
