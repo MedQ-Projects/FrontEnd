@@ -8,8 +8,7 @@
   "scripts": {
     "test": "echo \"No test specified\" && exit 0",
     "run": "quasar dev",
-    "build": "quasar build",
-    "heroku-postbuild": "yarn && yarn build"
+    "build": "quasar build"
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
