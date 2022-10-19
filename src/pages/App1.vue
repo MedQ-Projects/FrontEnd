@@ -33,6 +33,7 @@
             title="Formato tabela"
             :columns="columns"
             row-key="name"
+
           />
           <q-table
             v-if="showTable"
