@@ -12,7 +12,7 @@
         />
 
         <q-toolbar-title>
-          Protótipo
+          MedQuimica FrontEnd
         </q-toolbar-title>
       </q-toolbar>
     </q-header>
