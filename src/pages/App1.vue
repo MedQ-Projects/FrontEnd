@@ -176,7 +176,7 @@ export default {
       this.loading = true;
       return new Promise(
         () => {
-          this.$axios.post("/api/gripenew/optimize", this.xslxJson)
+          this.$axios.post("https://4kpw53thkri4yk3p4lcdclcnxq0achir.lambda-url.us-east-1.on.aws/gripenew/optimize", this.xslxJson)
             .then((result) =>{
               this.jsonFromServeFile = result.data;
               this.createTableFromJson(this.jsonFromServeFile);
