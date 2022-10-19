@@ -26,7 +26,7 @@
         </q-card-section>
         <q-card-section v-if="showTable">
           <q-btn v-if="jsonFromServeFile" class="q-mb-sm" icon="download" @click="downloadXLSX(jsonFromServeFile)" label="Baixar .xlsx gerado"></q-btn>
-          <q-btn v-else @click="runSeverUpload" class="q-mb-sm" icon="play" label="Executar"></q-btn>
+          <q-btn v-else @click="runSeverUpload" class="q-mb-sm" icon="play_arrow" label="Executar"></q-btn>
           <q-table
             style="max-width: 800px"
             :rows="rows"
@@ -128,7 +128,7 @@ export default {
     runSeverUpload(){
       return new Promise(
         () => {
-          this.$axios.post("https://cors-anywhere.herokuapp.com/" + "https://4kpw53thkri4yk3p4lcdclcnxq0achir.lambda-url.us-east-1.on.aws/gripenew/optimize", this.xslxJson, {
+          this.$axios.post( "https://4kpw53thkri4yk3p4lcdclcnxq0achir.lambda-url.us-east-1.on.aws/gripenew/optimize", this.xslxJson, {
             headers: {
               "access-control-allow-origin": "*",
               "content-type": "application/json; charset=utf-8",
