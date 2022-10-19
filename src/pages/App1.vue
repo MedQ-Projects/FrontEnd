@@ -181,6 +181,7 @@ export default {
               this.jsonFromServeFile = result.data;
               this.createTableFromJson(this.jsonFromServeFile);
               this.loading = false;
+
               this.progress = 1;
           }).catch(err =>{
             if(err){
