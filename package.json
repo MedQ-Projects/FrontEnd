@@ -8,14 +8,18 @@
   "scripts": {
     "test": "echo \"No test specified\" && exit 0",
     "run": "quasar dev",
-    "build": "quasar build"
+    "build": "quasar build",
+    "heroku-postbuild": "yarn && yarn build"
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
     "axios": "^1.1.3",
+    "connect-history-api-fallback": "^2.0.0",
     "core-js": "^3.6.5",
+    "express": "^4.18.2",
     "quasar": "^2.6.0",
     "read-excel-file": "^5.5.1",
+    "serve-static": "^1.15.0",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0",
     "xlsx": "^0.18.5"
