@@ -1,55 +1,63 @@
 <template>
   <q-card class="card q-ma-md bg-blue flex justify-center text-white">
     <q-card-section>
-      <q-card class="bg-white text-grey-8">
+      <q-card style="min-width: 500px" class="bg-white text-grey-8">
         <q-card-section>
           <span style="font-size: 18px; font-weight: 700">App de Gerenciamento</span>
         </q-card-section>
         <q-card-section>
           <q-file
+            :disable="loading"
+            @update:model-value="updateFiles"
             v-model="xslxFile"
             label="Selecione o arquivo .xlsx"
             filled
+            clearable
+            accept=".xlsx"
             style="min-width: 300px"
           >
-            <template v-slot:after v-if="xslxFile">
+            <template v-slot:after v-if="canUpload && !xslxJson">
               <q-btn
                 color="primary"
                 dense
                 icon="cloud_upload"
                 round
                 @click="onFileChange"
-                :disable="!xslxFile"
               />
             </template>
           </q-file>
         </q-card-section>
         <q-card-section v-if="showTable">
-          <q-btn v-if="jsonFromServeFile" class="q-mb-sm" icon="download" @click="downloadXLSX(jsonFromServeFile)" label="Baixar .xlsx gerado"></q-btn>
-          <q-btn v-else @click="runSeverUpload" class="q-mb-sm" icon="play_arrow" label="Executar"></q-btn>
+          <q-btn v-if="jsonFromServeFile" class="q-mb-sm" color="primary" icon="download" @click="downloadXLSX(jsonFromServeFile)" label="Baixar .xlsx gerado"></q-btn>
+          <q-btn v-else @click="runSeverUpload" color="positive" class="q-mb-sm" icon="play_arrow" label="Executar"></q-btn>
+          <q-linear-progress size="15px"  :value="progress" color="positive" class="q-mt-sm q-mb-sm" />
           <q-table
             style="max-width: 800px"
             :rows="rows"
+            :loading="loading"
             title="Formato tabela"
             :columns="columns"
             row-key="name"
-
-          />
+          >
+            <template v-slot:loading>
+              <q-inner-loading showing color="primary" />
+            </template>
+          </q-table>
           <q-table
             v-if="showTable"
             style="max-width: 800px"
             :rows="rows"
             grid
+            :loading="loading"
             class="q-mt-md"
             title="Formato cards"
             :columns="columns"
             row-key="name"
-          />
-          <q-field label="Formato JSON" style="max-width: 800px" class="q-mt-md" v-if="showTable" stack-label>
-            <template v-slot:control>
-              <div class="self-center no-outline" tabindex="0">{{ (xslxJson) }}</div>
+          >
+            <template v-slot:loading>
+              <q-inner-loading showing color="primary" />
             </template>
-          </q-field>
+          </q-table>
         </q-card-section>
       </q-card>
     </q-card-section>
@@ -58,13 +66,30 @@
 
 <script>
 import readXlsxFile from 'read-excel-file'
-import axios from 'axios'
+import {useQuasar} from "quasar";
 const XLSX = require('xlsx');
+const $q = useQuasar()
 
 export default {
   name: "App1",
+  computed: {
+    canUpload(){
+      return this.xslxFile !== null;
+    }
+  },
   methods: {
-    convertTabletoJson(data){
+    updateFiles(){
+      this.xslxFile = null;
+      this.columns = [];
+      this.showTable = false;
+      this.rows = [];
+      this.xslxJson = null;
+      this.jsonFromServeFile = null;
+      this.loading = false;
+      this.progress = 0;
+    },
+
+    convertXLSXtoJson(data){
       const arr = [];
       for(let i = 1; i < data.length; i++){
         arr.push({
@@ -83,7 +108,7 @@ export default {
       this.xslxJson = arr;
     },
 
-    convertJsonToTable(data){
+    convertJsonToXLSX(data){
       const arr = [];
       for(let i = 0; i < data.length; i++){
         arr.push({
@@ -98,24 +123,22 @@ export default {
           "DIFERENCA PESO": data[i].weightDiff
         })
       }
-      console.log(arr)
       return arr;
     },
 
     downloadXLSX(file){
-      const workSheet = XLSX.utils.json_to_sheet(this.convertJsonToTable(file));
+      const workSheet = XLSX.utils.json_to_sheet(this.convertJsonToXLSX(file));
       const workBook = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(workBook, workSheet, 'Tabela Gerada');
       XLSX.writeFile(workBook, 'tabela_gerada.xlsx');
     },
 
-    createTable(rows){
+    createTableFromXLSX(rows){
       let rowObj = {};
 
       rows[0].forEach((item) =>{
         this.columns.push({name: item, required: true, label: item, align: 'left', field: item,  sortable: true})
       })
-
       for(let i = 1; i < rows.length; i++){
         rows[i].forEach((item, idx) =>{
           rowObj[this.columns[idx].name] = item;
@@ -126,21 +149,58 @@ export default {
       this.showTable = true;
     },
 
+    createTableFromJson(jsonFile){
+      this.columns = [];
+      this.rows = [];
+      const fields = ['LOTE', 'AMARELO', 'QUANTIDADE AMARELO', 'PESO MEDIO AMARELO', 'VERDE', 'QUANTIDADE VERDE', 'PESO MEDIO VERDE', 'DIFERENCA', 'DIFERENCA PESO']
+      fields.forEach(field => {
+        this.columns.push({name: field, required: true, label: field, align: 'left', field: field,  sortable: true})
+      })
+      jsonFile.forEach((item) =>{
+        this.rows.push({
+          'LOTE': item.id,
+          'AMARELO': item.yellowSubBatch.id,
+          'QUANTIDADE AMARELO': item.yellowSubBatch.quantity,
+          'PESO MEDIO AMARELO': item.yellowSubBatch.avgWeight,
+          'VERDE': item.greenSubBatch.id,
+          'QUANTIDADE VERDE': item.greenSubBatch.quantity,
+          'PESO MEDIO VERDE': item.greenSubBatch.avgWeight,
+          'DIFERENCA': item.quantityDiff,
+          'DIFERENCA PESO': item.weightDiff
+          })
+      })
+      this.showTable = true;
+    },
+
     runSeverUpload(){
+      this.loading = true;
       return new Promise(
         () => {
           this.$axios.post("/api/gripenew/optimize", this.xslxJson)
             .then((result) =>{
               this.jsonFromServeFile = result.data;
-              console.log(this.jsonFromServeFile);
+              this.createTableFromJson(this.jsonFromServeFile);
+              this.loading = false;
+              this.progress = 1;
+          }).catch(err =>{
+            if(err){
+              this.loading = false;
+              this.$q.notify({
+                message: 'Erro na Execução !',
+                icon: 'error',
+                caption: 'Verifique se o arquivo .xlsx está correto.',
+                color: 'negative'
+              })
+            }
+            console.log(err)
           })
         });
     },
 
     onFileChange() {
       readXlsxFile(this.xslxFile).then((rows) => {
-        this.createTable(rows);
-        this.convertTabletoJson(rows);
+        this.createTableFromXLSX(rows);
+        this.convertXLSXtoJson(rows);
       });
     }
   },
@@ -152,8 +212,7 @@ export default {
     const rows = [];
     const xslxJson = null;
     const jsonFromServeFile = null;
-
-    const outputJson = []
+    const loading = false;
 
     return{
       xslxFile: xslxFile,
@@ -162,6 +221,8 @@ export default {
       showTable: showTable,
       xslxJson: xslxJson,
       jsonFromServeFile: jsonFromServeFile,
+      loading: loading,
+      progress: 0
     }
   }
 }
