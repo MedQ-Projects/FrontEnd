@@ -58,7 +58,7 @@
 
 <script>
 import readXlsxFile from 'read-excel-file'
-import axios from "axios";
+import axios from 'axios'
 const XLSX = require('xlsx');
 
 export default {
@@ -129,15 +129,8 @@ export default {
     runSeverUpload(){
       return new Promise(
         () => {
-          this.$axios.post( "https://cors-anywhere.herokuapp.com/" + "https://4kpw53thkri4yk3p4lcdclcnxq0achir.lambda-url.us-east-1.on.aws/gripenew/optimize", this.xslxJson, {
-            headers: {
-              "access-control-allow-origin": "*",
-              "content-type": "application/json; charset=utf-8",
-              "x-amzn-requestid": "4cd1822c-1c8b-4530-8df5-9b7a6f5eed33",
-              "x-amzn-trace-id": "root=1-634f49e4-3c9877944d04a1553205db4f;sampled=0",
-              "x-final-url": "https://4kpw53thkri4yk3p4lcdclcnxq0achir.lambda-url.us-east-1.on.aws/gripenew/optimize"
-
-            }, }).then((result) =>{
+          this.$axios.post("/api/gripenew/optimize", this.xslxJson)
+            .then((result) =>{
               this.jsonFromServeFile = result.data;
               console.log(this.jsonFromServeFile);
           })
@@ -169,10 +162,6 @@ export default {
       showTable: showTable,
       xslxJson: xslxJson,
       jsonFromServeFile: jsonFromServeFile,
-      axiosInstace: axios.create({
-        baseURL: 'https://4kpw53thkri4yk3p4lcdclcnxq0achir.lambda-url.us-east-1.on.aws/',
-        headers: {"Access-Control-Allow-Origin": "*"}
-      })
     }
   }
 }
