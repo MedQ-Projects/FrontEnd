@@ -70,6 +70,11 @@ import {useQuasar} from "quasar";
 const XLSX = require('xlsx');
 const $q = useQuasar()
 
+const headers = {
+  'Content-Type': 'application/json',
+  'Access-Control-Allow-Origin':  '*'
+}
+
 export default {
   name: "App1",
   computed: {
@@ -176,7 +181,9 @@ export default {
       this.loading = true;
       return new Promise(
         () => {
-          this.$axios.post("https://4kpw53thkri4yk3p4lcdclcnxq0achir.lambda-url.us-east-1.on.aws/gripenew/optimize", this.xslxJson)
+          this.$axios.post("https://4kpw53thkri4yk3p4lcdclcnxq0achir.lambda-url.us-east-1.on.aws/gripenew/optimize", this.xslxJson, {
+            headers: headers
+          })
             .then((result) =>{
               this.jsonFromServeFile = result.data;
               this.createTableFromJson(this.jsonFromServeFile);
