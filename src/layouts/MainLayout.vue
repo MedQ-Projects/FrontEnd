@@ -29,9 +29,9 @@
       </q-list>
     </q-drawer>
 
-    <q-page-container>
+    <q-page>
       <router-view />
-    </q-page-container>
+    </q-page>
   </q-layout>
 </template>
 
