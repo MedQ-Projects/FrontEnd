@@ -1,7 +1,6 @@
 <template>
   <q-card class="card q-ma-md justify-center bg-blue flex text-white">
-    <q-card-section>
-      <q-card class="flex column bg-white text-grey-8">
+      <q-card class=" q-ma-md flex column bg-white text-grey-8">
         <q-card-section>
           <span style="font-size: 18px; font-weight: 700">App de Gerenciamento</span>
           <div class="shadow-2 q-pa-sm q-mt-sm">
@@ -62,7 +61,6 @@
           </q-table>
         </q-card-section>
       </q-card>
-    </q-card-section>
   </q-card>
 </template>
 
