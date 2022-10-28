@@ -1,9 +1,13 @@
 <template>
-  <q-card class="card q-ma-md bg-blue flex text-white">
-    <q-card-section class="full-width">
+  <q-card class="card q-ma-md justify-center bg-blue flex text-white">
+    <q-card-section>
       <q-card class="flex column bg-white text-grey-8">
         <q-card-section>
           <span style="font-size: 18px; font-weight: 700">App de Gerenciamento</span>
+          <div class="shadow-2 q-pa-sm q-mt-sm">
+            <span>Descrição da aplicação: <br> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </span>
+          </div>
         </q-card-section>
         <q-card-section>
           <q-file
@@ -28,8 +32,8 @@
           </q-file>
         </q-card-section>
         <q-card-section v-if="showTable">
-          <q-btn v-if="jsonFromServeFile" class="q-mb-sm" color="primary" icon="download" @click="downloadXLSX(jsonFromServeFile)" label="Baixar .xlsx gerado"></q-btn>
-          <q-btn v-else @click="runSeverUpload" color="positive" class="q-mb-sm" icon="play_arrow" label="Executar"></q-btn>
+          <q-btn v-if="jsonFromServeFile" class="q-mb-sm" color="secondary" icon="download" @click="downloadXLSX(jsonFromServeFile)" label="Baixar .xlsx gerado"></q-btn>
+          <q-btn v-else @click="runSeverUpload" color="primary" class="q-mb-sm" icon="play_arrow" label="Executar"></q-btn>
           <q-linear-progress size="15px"  :value="progress" color="positive" class="q-mt-sm q-mb-sm" />
           <q-table
             :rows="rows"
