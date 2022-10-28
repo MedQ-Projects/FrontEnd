@@ -8,25 +8,22 @@
           round
           icon="apps"
           aria-label="Menu"
+          color="secondary"
           @click="toggleLeftDrawer"
         />
 
-        <q-toolbar-title>
-          MedQuimica FrontEnd
-        </q-toolbar-title>
+        <q-toolbar-title class="text-bold">MedQuímica FrontEnd</q-toolbar-title>
       </q-toolbar>
     </q-header>
 
     <q-drawer
       v-model="leftDrawerOpen"
       show-if-above
-      bordered
+      class="bg-secondary"
     >
       <q-list>
-        <q-item-label
-          header
-        >
-          Nossos Apps !
+        <q-item-label class="bg-primary text-white shadow" header>
+          Soluções disponiveis !
         </q-item-label>
         <Apps/>
       </q-list>

@@ -1,7 +1,7 @@
 <template>
-  <q-card class="card q-ma-md bg-blue flex justify-center text-white">
-    <q-card-section>
-      <q-card style="min-width: 500px" class="bg-white text-grey-8">
+  <q-card class="card q-ma-md bg-blue flex text-white">
+    <q-card-section class="full-width">
+      <q-card class="flex full-width column bg-white text-grey-8">
         <q-card-section>
           <span style="font-size: 18px; font-weight: 700">App de Gerenciamento</span>
         </q-card-section>
@@ -12,9 +12,9 @@
             v-model="xslxFile"
             label="Selecione o arquivo .xlsx"
             filled
+            color="secondary"
             clearable
             accept=".xlsx"
-            style="min-width: 300px"
           >
             <template v-slot:after v-if="canUpload && !xslxJson">
               <q-btn
@@ -32,7 +32,6 @@
           <q-btn v-else @click="runSeverUpload" color="positive" class="q-mb-sm" icon="play_arrow" label="Executar"></q-btn>
           <q-linear-progress size="15px"  :value="progress" color="positive" class="q-mt-sm q-mb-sm" />
           <q-table
-            style="max-width: 800px"
             :rows="rows"
             :loading="loading"
             title="Formato tabela"
@@ -45,7 +44,6 @@
           </q-table>
           <q-table
             v-if="showTable"
-            style="max-width: 800px"
             :rows="rows"
             grid
             :loading="loading"

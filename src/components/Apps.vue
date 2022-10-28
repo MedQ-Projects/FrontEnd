@@ -1,5 +1,7 @@
 <template>
   <q-item
+    class="bg-white q-ma-sm"
+    style="border-radius: 5px"
     v-for="app in appsLink"
     clickable
     tag="a"
