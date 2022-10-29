@@ -1,40 +1,40 @@
 <template>
-  <q-page>
-    <q-card class="q-ma-md justify-center bg-blue flex text-white">
-      <q-card :key="key" class=" q-ma-md flex column bg-white text-grey-8">
-        <q-card-section>
-          <span style="font-size: 18px; font-weight: 700">App de Gerenciamento</span>
-          <div class="shadow-2 q-pa-sm q-mt-sm">
-            <span>Descrição da aplicação: <br> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </span>
-          </div>
-        </q-card-section>
-        <q-card-section>
-          <q-file
-            :disable="loading"
-            @update:model-value="updateFiles"
-            v-model="xslxFile"
-            label="Selecione o arquivo .xlsx"
-            filled
-            color="secondary"
-            clearable
-            accept=".xlsx"
-          >
-            <template v-slot:after v-if="canUpload && !xslxJson">
-              <q-btn
-                color="primary"
-                dense
-                icon="cloud_upload"
-                round
-                @click="onFileChange"
-              />
-            </template>
-          </q-file>
-        </q-card-section>
-        <q-card-section v-if="showTable">
-          <q-btn v-if="jsonFromServeFile" class="q-mb-sm" color="secondary" icon="download" @click="downloadXLSX(jsonFromServeFile)" label="Baixar .xlsx gerado"></q-btn>
-          <q-btn v-else @click="runSeverUpload" color="primary" class="q-mb-sm" icon="play_arrow" label="Executar"></q-btn>
-          <q-linear-progress size="15px"  :value="progress" color="positive" class="q-mt-sm q-mb-sm" />
+  <q-card class="q-ma-md q-pa-sm justify-center bg-blue text-white">
+    <q-card class="q-ma-sm bg-white text-grey-8">
+      <q-card-section>
+        <span style="font-size: 18px; font-weight: 700">App de Gerenciamento</span>
+        <div class="shadow-2 q-pa-sm q-mt-sm">
+          <span>Descrição da aplicação: <br> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+          </span>
+        </div>
+      </q-card-section>
+      <q-card-section>
+        <q-file
+          :disable="loading"
+          @update:model-value="updateFiles"
+          v-model="xslxFile"
+          label="Selecione o arquivo .xlsx"
+          filled
+          color="secondary"
+          clearable
+          accept=".xlsx"
+        >
+          <template v-slot:after v-if="canUpload && !xslxJson">
+            <q-btn
+              color="primary"
+              dense
+              icon="cloud_upload"
+              round
+              @click="onFileChange"
+            />
+          </template>
+        </q-file>
+      </q-card-section>
+      <q-card-section v-if="showTable">
+        <q-btn v-if="jsonFromServeFile" class="q-mb-sm" color="secondary" icon="download" @click="downloadXLSX(jsonFromServeFile)" label="Baixar .xlsx gerado"></q-btn>
+        <q-btn v-else @click="runSeverUpload" color="primary" class="q-mb-sm" icon="play_arrow" label="Executar"></q-btn>
+        <q-linear-progress size="15px"  :value="progress" color="positive" class="q-mt-sm q-mb-sm" />
+        <div class="q-pa-md">
           <q-table
             :rows="rows"
             :loading="loading"
@@ -46,24 +46,24 @@
               <q-inner-loading showing color="primary" />
             </template>
           </q-table>
-          <q-table
-            v-if="showTable"
-            :rows="rows"
-            grid
-            :loading="loading"
-            class="q-mt-md"
-            title="Formato cards"
-            :columns="columns"
-            row-key="name"
-          >
-            <template v-slot:loading>
-              <q-inner-loading showing color="primary" />
-            </template>
-          </q-table>
-        </q-card-section>
-      </q-card>
+        </div>
+        <q-table
+          v-if="showTable"
+          :rows="rows"
+          grid
+          :loading="loading"
+          class="q-mt-md"
+          title="Formato cards"
+          :columns="columns"
+          row-key="name"
+        >
+          <template v-slot:loading>
+            <q-inner-loading showing color="primary" />
+          </template>
+        </q-table>
+      </q-card-section>
     </q-card>
-  </q-page>
+  </q-card>
 </template>
 
 <script>
@@ -71,6 +71,7 @@ import readXlsxFile from 'read-excel-file'
 import {useQuasar} from "quasar";
 const XLSX = require('xlsx');
 const $q = useQuasar()
+
 
 const headers = {
   'Content-Type': 'application/json',
@@ -174,16 +175,15 @@ export default {
           'PESO MEDIO VERDE': item.greenSubBatch.avgWeight,
           'DIFERENCA': item.quantityDiff,
           'DIFERENCA PESO': item.weightDiff
-          })
+        })
       })
-      this.key = this.key + 1;
     },
 
     runSeverUpload(){
       this.loading = true;
       return new Promise(
         () => {
-          this.$axios.post("https://4kpw53thkri4yk3p4lcdclcnxq0achir.lambda-url.us-east-1.on.aws/gripenew/optimize", this.xslxJson, {
+          this.$axios.post("/api/gripenew/optimize", this.xslxJson, {
             headers: headers
           })
             .then((result) =>{
@@ -192,7 +192,7 @@ export default {
               this.loading = false;
 
               this.progress = 1;
-          }).catch(err =>{
+            }).catch(err =>{
             if(err){
               this.loading = false;
               this.$q.notify({
@@ -232,8 +232,7 @@ export default {
       xslxJson: xslxJson,
       jsonFromServeFile: jsonFromServeFile,
       loading: loading,
-      progress: 0,
-      key: 0
+      progress: 0
     }
   }
 }
