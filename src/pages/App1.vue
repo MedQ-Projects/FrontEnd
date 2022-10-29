@@ -1,6 +1,7 @@
 <template>
-  <q-card class="q-ma-md justify-center bg-blue flex text-white">
-      <q-card class=" q-ma-md flex column bg-white text-grey-8">
+  <q-page>
+    <q-card class="q-ma-md justify-center bg-blue flex text-white">
+      <q-card :key="key" class=" q-ma-md flex column bg-white text-grey-8">
         <q-card-section>
           <span style="font-size: 18px; font-weight: 700">App de Gerenciamento</span>
           <div class="shadow-2 q-pa-sm q-mt-sm">
@@ -61,7 +62,8 @@
           </q-table>
         </q-card-section>
       </q-card>
-  </q-card>
+    </q-card>
+  </q-page>
 </template>
 
 <script>
@@ -174,7 +176,7 @@ export default {
           'DIFERENCA PESO': item.weightDiff
           })
       })
-      this.showTable = true;
+      this.key = this.key + 1;
     },
 
     runSeverUpload(){
@@ -230,7 +232,8 @@ export default {
       xslxJson: xslxJson,
       jsonFromServeFile: jsonFromServeFile,
       loading: loading,
-      progress: 0
+      progress: 0,
+      key: 0
     }
   }
 }
