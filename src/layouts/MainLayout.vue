@@ -28,9 +28,11 @@
         <Apps/>
       </q-list>
     </q-drawer>
-    <q-page-container>
-      <router-view />
-    </q-page-container>
+    <q-page>
+      <q-page-container>
+        <router-view />
+      </q-page-container>
+    </q-page>
   </q-layout>
 </template>
 

@@ -1,5 +1,5 @@
 <template>
-  <q-card class="card q-ma-md justify-center bg-blue flex text-white">
+  <q-card class="q-ma-md justify-center bg-blue flex text-white">
       <q-card class=" q-ma-md flex column bg-white text-grey-8">
         <q-card-section>
           <span style="font-size: 18px; font-weight: 700">App de Gerenciamento</span>
