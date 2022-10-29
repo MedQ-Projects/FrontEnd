@@ -1,7 +1,7 @@
 <template>
   <q-page>
     <q-card class="q-ma-md justify-center bg-blue flex text-white">
-      <q-card :key="key" class=" q-ma-md flex column bg-white text-grey-8">
+      <q-card class=" q-ma-md flex column bg-white text-grey-8">
         <q-card-section>
           <span style="font-size: 18px; font-weight: 700">App de Gerenciamento</span>
           <div class="shadow-2 q-pa-sm q-mt-sm">
@@ -176,14 +176,13 @@ export default {
           'DIFERENCA PESO': item.weightDiff
           })
       })
-      this.key = this.key + 1;
     },
 
     runSeverUpload(){
       this.loading = true;
       return new Promise(
         () => {
-          this.$axios.post("https://4kpw53thkri4yk3p4lcdclcnxq0achir.lambda-url.us-east-1.on.aws/gripenew/optimize", this.xslxJson, {
+          this.$axios.post("/api/gripenew/optimize", this.xslxJson, {
             headers: headers
           })
             .then((result) =>{

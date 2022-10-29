@@ -76,6 +76,14 @@ module.exports = configure(function (ctx) {
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-devServer
     devServer: {
+      proxy: {
+        "/api": {
+          "target": 'https://4kpw53thkri4yk3p4lcdclcnxq0achir.lambda-url.us-east-1.on.aws',
+          "pathRewrite": { '^/api': '' },
+          "changeOrigin": true,
+          "secure": false
+        }
+      },
       server: {
         type: 'http'
       },
